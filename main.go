@@ -8,6 +8,7 @@ import (
 
 	"github.com/pion/rtcp"
 	"github.com/pion/webrtc/v2"
+	"github.com/vinijabes/gocompositor-examples/signal"
 	"github.com/vinijabes/gocompositor/pkg/compositor"
 	"github.com/vinijabes/gocompositor/pkg/compositor/element"
 	"github.com/vinijabes/gostreamer/pkg/gstreamer"
@@ -225,7 +226,7 @@ func main() {
 
 	// Wait for the offer to be pasted
 	offer := webrtc.SessionDescription{}
-	Decode(MustReadStdin(), &offer)
+	signal.Decode(signal.MustReadStdin(), &offer)
 
 	// Set the remote SessionDescription
 	err = peerConnection.SetRemoteDescription(offer)
@@ -246,7 +247,7 @@ func main() {
 	}
 
 	// Output the answer in base64 so we can paste it in browser
-	fmt.Println(Encode(answer))
+	fmt.Println(signal.Encode(answer))
 
 	// Block forever
 	select {}

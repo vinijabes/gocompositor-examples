@@ -145,11 +145,6 @@ func main() {
 
 			cmp.Start()
 
-			// codec := track.Codec()
-			// fmt.Printf("Track has started, of type %d: %s \n", track.PayloadType(), codec.Name)
-			// pipeline := gst.CreatePipeline(codec.Name)
-			// pipeline.Start()
-
 			buf := make([]byte, 1400)
 			for {
 				i, readErr := track.Read(buf)
@@ -191,31 +186,23 @@ func main() {
 				log.Fatalln(err)
 			}
 
-			queue, err := gstreamer.NewElement("queue", fmt.Sprintf("audioqueue_%d", counter))
-			if err != nil {
-				log.Fatalln(err)
-			}
-
 			cmp.Add(audio)
 			cmp.Add(capsfilter)
 			cmp.Add(depay)
-			cmp.Add(dec)
-			cmp.AddAudio(queue)
+			cmp.AddAudio(dec)
 
 			if !audio.Link(capsfilter) ||
 				!capsfilter.Link(depay) ||
-				!depay.Link(dec) ||
-				!dec.Link(queue) {
+				!depay.Link(dec) {
 				log.Fatalln("Failed to link audio elements")
 			}
 
 			counter++
-
 			mx.Unlock()
 
 			fmt.Println("Adding Audio in pipeline")
 
-			time.Sleep(3 * time.Second)
+			time.Sleep(100 * time.Millisecond)
 			cmp.Start()
 			buf := make([]byte, 1400)
 			for {

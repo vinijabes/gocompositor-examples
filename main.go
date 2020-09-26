@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"sync"
 	"time"
 
 	"github.com/pion/rtcp"
@@ -28,10 +29,24 @@ func main() {
 		log.Fatalln(err)
 	}
 
+	audioconvert, err := gstreamer.NewElement("audioconvert", "audioconvert")
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	audiosink, err := gstreamer.NewElement("autoaudiosink", "audiosink")
+	if err != nil {
+		log.Fatalln(err)
+	}
+
 	cmp.Add(convert)
 	cmp.Add(sink)
+	cmp.Add(audioconvert)
+	cmp.Add(audiosink)
 	cmp.LinkVideoSink(convert)
 	convert.Link(sink)
+	cmp.LinkAudioSink(audioconvert)
+	audioconvert.Link(audiosink)
 
 	layout := compositor.NewLayout(1280, 720)
 	videoRule1 := compositor.NewLayoutRule()
@@ -98,10 +113,14 @@ func main() {
 		panic(err)
 	}
 
+	var counter int = 0
 	// Set a handler for when a new remote track starts, this handler creates a gstreamer pipeline
 	// for the given codec
+
+	var mx sync.Mutex
 	peerConnection.OnTrack(func(track *webrtc.Track, receiver *webrtc.RTPReceiver) {
 		fmt.Println("NEW TRACK RECEIVED")
+		mx.Lock()
 		// // Send a PLI on an interval so that the publisher is pushing a keyframe every rtcpPLIInterval
 		// // This is a temporary fix until we implement incoming RTCP events, then we would push a PLI only when a viewer requests it
 		go func() {
@@ -114,6 +133,7 @@ func main() {
 			}
 		}()
 
+		fmt.Println(track.Codec().Name)
 		if track.Kind() == webrtc.RTPCodecTypeVideo {
 			video, err := element.NewVideoRTC(640, 360, element.VideoRTCCodecVP8)
 			if err != nil {
@@ -121,11 +141,15 @@ func main() {
 			}
 
 			cmp.AddVideo(video)
+			mx.Unlock()
+
+			cmp.Start()
 
 			// codec := track.Codec()
 			// fmt.Printf("Track has started, of type %d: %s \n", track.PayloadType(), codec.Name)
 			// pipeline := gst.CreatePipeline(codec.Name)
 			// pipeline.Start()
+
 			buf := make([]byte, 1400)
 			for {
 				i, readErr := track.Read(buf)
@@ -134,7 +158,73 @@ func main() {
 				}
 
 				video.Push(buf[:i])
-				cmp.Start()
+			}
+		} else {
+			audio, err := gstreamer.NewElement("appsrc", fmt.Sprintf("audio_%d", counter))
+			if err != nil {
+				log.Fatalln(err)
+			}
+
+			audio.Set("format", 3)
+			audio.Set("is-live", true)
+			audio.Set("do-timestamp", true)
+
+			capsfilter, err := gstreamer.NewElement("capsfilter", fmt.Sprintf("audiofilter_%d", counter))
+			if err != nil {
+				log.Fatalln(err)
+			}
+
+			caps, err := gstreamer.NewCapsFromString("application/x-rtp, payload=96, encoding-name=OPUS")
+			if err != nil {
+				log.Fatalln(err)
+			}
+
+			capsfilter.Set("caps", caps)
+
+			depay, err := gstreamer.NewElement("rtpopusdepay", fmt.Sprintf("audiodepay_%d", counter))
+			if err != nil {
+				log.Fatalln(err)
+			}
+
+			dec, err := gstreamer.NewElement("opusdec", fmt.Sprintf("audiodec_%d", counter))
+			if err != nil {
+				log.Fatalln(err)
+			}
+
+			queue, err := gstreamer.NewElement("queue", fmt.Sprintf("audioqueue_%d", counter))
+			if err != nil {
+				log.Fatalln(err)
+			}
+
+			cmp.Add(audio)
+			cmp.Add(capsfilter)
+			cmp.Add(depay)
+			cmp.Add(dec)
+			cmp.AddAudio(queue)
+
+			if !audio.Link(capsfilter) ||
+				!capsfilter.Link(depay) ||
+				!depay.Link(dec) ||
+				!dec.Link(queue) {
+				log.Fatalln("Failed to link audio elements")
+			}
+
+			counter++
+
+			mx.Unlock()
+
+			fmt.Println("Adding Audio in pipeline")
+
+			time.Sleep(3 * time.Second)
+			cmp.Start()
+			buf := make([]byte, 1400)
+			for {
+				i, readErr := track.Read(buf)
+				if readErr != nil {
+					panic(err)
+				}
+
+				audio.Push(buf[:i])
 			}
 		}
 

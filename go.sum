@@ -88,8 +88,17 @@ github.com/vinijabes/gocompositor v0.14.4-0.20200926021303-2c9709ccd3c5 h1:QUyu3
 github.com/vinijabes/gocompositor v0.14.4-0.20200926021303-2c9709ccd3c5/go.mod h1:KTNMdSx06rdMGKFFWU6VLib7GZPWabvBBHJDama97Ig=
 github.com/vinijabes/gocompositor v0.14.4-0.20200926050847-f5314e793e60 h1:HDORuPo/WrRsTYBrXRxAe/+hG4o6XMh04zYUkkCpu4s=
 github.com/vinijabes/gocompositor v0.14.4-0.20200926050847-f5314e793e60/go.mod h1:KTNMdSx06rdMGKFFWU6VLib7GZPWabvBBHJDama97Ig=
+github.com/vinijabes/gocompositor v0.14.4 h1:0gndwqO3q7JccJ/72F1WT/xufgHnnEjqrbshtFz9S+s=
 github.com/vinijabes/gocompositor v0.14.5-0.20200927010829-7507cab1a3d9 h1:TnNjm9aQxGvt2byt/L+I1wST+xptb4NQBhU5JItE4xk=
 github.com/vinijabes/gocompositor v0.14.5-0.20200927010829-7507cab1a3d9/go.mod h1:Sz9qvvuW4giUi9w6DE2syPY4cYecoQ/mqQ6ybm2qQR0=
+github.com/vinijabes/gocompositor v0.14.5-0.20200927133736-675758a57969 h1:h+yAtdIZCyPalC5Gn5hoO3IK5kteDJ/c68YeKzUuHyE=
+github.com/vinijabes/gocompositor v0.14.5-0.20200927133736-675758a57969/go.mod h1:2BvaMkutCBjWbbp7TbXot6mwPnGdpF+9O1f8AqBwNmw=
+github.com/vinijabes/gocompositor v0.14.5-0.20200927141555-e491677320f1 h1:2PLx0TK6H0noxpkKR7570zY9+gEzX+uGgbsz/vHehNY=
+github.com/vinijabes/gocompositor v0.14.5-0.20200927141555-e491677320f1/go.mod h1:2BvaMkutCBjWbbp7TbXot6mwPnGdpF+9O1f8AqBwNmw=
+github.com/vinijabes/gocompositor v0.14.5-0.20200927143051-fd205b13e9bd h1:+QZA1TYfV8pWzikO57LuOvDN4yJaiz3vRwXCwO4T6k4=
+github.com/vinijabes/gocompositor v0.14.5-0.20200927143051-fd205b13e9bd/go.mod h1:2BvaMkutCBjWbbp7TbXot6mwPnGdpF+9O1f8AqBwNmw=
+github.com/vinijabes/gocompositor v0.14.5-0.20200927143539-ce0a186fdc32 h1:kPwaHpXjkTOn2Nr+0hyUUnfFOtWfI9pWgUg9atUd7/Q=
+github.com/vinijabes/gocompositor v0.14.5-0.20200927143539-ce0a186fdc32/go.mod h1:2BvaMkutCBjWbbp7TbXot6mwPnGdpF+9O1f8AqBwNmw=
 github.com/vinijabes/gostreamer v0.1.6 h1:+MaBNHlEDFvzlLrIiZlZWEOZ5XNR5gHtg2JdwFjNjgI=
 github.com/vinijabes/gostreamer v0.1.6/go.mod h1:MAY+dEJuXm1US1WKVFWXIIxeyrQw2t2DLyjb1vnU4hs=
 github.com/vinijabes/gostreamer v0.1.7-0.20200927010745-ab232afcffc3 h1:erNqdBPSbvg5xljWvkrxyJaHJC1n54AGRiHznyGiewI=

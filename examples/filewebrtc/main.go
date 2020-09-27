@@ -13,10 +13,14 @@ import (
 	inputsignal "github.com/vinijabes/gocompositor-examples/signal"
 	"github.com/vinijabes/gocompositor/pkg/compositor"
 	"github.com/vinijabes/gocompositor/pkg/compositor/element"
+	"github.com/vinijabes/gocompositor/pkg/compositor/logging"
 	"github.com/vinijabes/gostreamer/pkg/gstreamer"
 )
 
 func main() {
+	compositor.SetDebugLogger(logging.ConsoleDebugLogger())
+	compositor.SetErrorLogger(logging.ConsoleErrorLogger())
+
 	cmp, err := compositor.NewCompositor()
 	if err != nil {
 		log.Fatalln(err)
@@ -195,20 +199,29 @@ func main() {
 			}
 		}()
 
-		fmt.Println(track.Codec().Name)
+		fmt.Println(track.Codec().Name, track.Kind())
 		if track.Kind() == webrtc.RTPCodecTypeVideo {
+			fmt.Println("Creating RTC Video")
+
 			video, err := element.NewVideoRTC(640, 360, element.VideoRTCCodecVP8)
+			fmt.Println("After NewVideoRTC")
+
 			if err != nil {
+				fmt.Println("SALVERARASRSARAS")
+				fmt.Println(err)
 				log.Fatalln(err)
 			}
 
+			fmt.Println("Adding video pipeline")
 			cmp.AddVideo(video)
 			mx.Unlock()
 
+			fmt.Println("Starting video pipeline")
 			cmp.Start()
 
 			buf := make([]byte, 1400)
 			for {
+				fmt.Println("Receiving video packet")
 				i, readErr := track.Read(buf)
 				if readErr != nil {
 					panic(err)
@@ -265,9 +278,11 @@ func main() {
 			fmt.Println("Adding Audio in pipeline")
 
 			time.Sleep(100 * time.Millisecond)
+			fmt.Println("Starting audio pipeline")
 			cmp.Start()
 			buf := make([]byte, 1400)
 			for {
+				fmt.Println("Receiving audio packet")
 				i, readErr := track.Read(buf)
 				if readErr != nil {
 					panic(err)
@@ -287,7 +302,7 @@ func main() {
 
 	// Wait for the offer to be pasted
 	offer := webrtc.SessionDescription{}
-	inputsignal.Decode(inputsignal.MustReadStdin(), &offer)
+	inputsignal.Decode(os.Getenv("SDP"), &offer)
 
 	// Set the remote SessionDescription
 	err = peerConnection.SetRemoteDescription(offer)
@@ -322,6 +337,8 @@ func main() {
 	case <-c:
 		break
 	}
+
+	fmt.Println("Gracefully shutdown")
 
 	cmp.SendEOS()
 	time.Sleep(5 * time.Second)

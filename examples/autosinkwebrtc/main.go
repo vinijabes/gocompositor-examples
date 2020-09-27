@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/pion/rtcp"
-	"github.com/pion/webrtc/v2"
+	"github.com/pion/webrtc/v3"
 	"github.com/vinijabes/gocompositor-examples/signal"
 	"github.com/vinijabes/gocompositor/pkg/compositor"
 	"github.com/vinijabes/gocompositor/pkg/compositor/element"
@@ -144,6 +144,7 @@ func main() {
 			cmp.AddVideo(video)
 			mx.Unlock()
 
+			time.Sleep(250 * time.Millisecond)
 			cmp.Start()
 
 			buf := make([]byte, 1400)
@@ -203,7 +204,7 @@ func main() {
 
 			fmt.Println("Adding Audio in pipeline")
 
-			time.Sleep(100 * time.Millisecond)
+			time.Sleep(250 * time.Millisecond)
 			cmp.Start()
 			buf := make([]byte, 1400)
 			for {
@@ -240,14 +241,18 @@ func main() {
 		panic(err)
 	}
 
+	gatherComplete := webrtc.GatheringCompletePromise(peerConnection)
+
 	// Sets the LocalDescription, and starts our UDP listeners
 	err = peerConnection.SetLocalDescription(answer)
 	if err != nil {
 		panic(err)
 	}
 
+	<-gatherComplete
+
 	// Output the answer in base64 so we can paste it in browser
-	fmt.Println(signal.Encode(answer))
+	fmt.Println(signal.Encode(*peerConnection.LocalDescription()))
 
 	// Block forever
 	select {}

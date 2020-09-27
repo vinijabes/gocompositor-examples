@@ -88,8 +88,12 @@ github.com/vinijabes/gocompositor v0.14.4-0.20200926021303-2c9709ccd3c5 h1:QUyu3
 github.com/vinijabes/gocompositor v0.14.4-0.20200926021303-2c9709ccd3c5/go.mod h1:KTNMdSx06rdMGKFFWU6VLib7GZPWabvBBHJDama97Ig=
 github.com/vinijabes/gocompositor v0.14.4-0.20200926050847-f5314e793e60 h1:HDORuPo/WrRsTYBrXRxAe/+hG4o6XMh04zYUkkCpu4s=
 github.com/vinijabes/gocompositor v0.14.4-0.20200926050847-f5314e793e60/go.mod h1:KTNMdSx06rdMGKFFWU6VLib7GZPWabvBBHJDama97Ig=
+github.com/vinijabes/gocompositor v0.14.5-0.20200927010829-7507cab1a3d9 h1:TnNjm9aQxGvt2byt/L+I1wST+xptb4NQBhU5JItE4xk=
+github.com/vinijabes/gocompositor v0.14.5-0.20200927010829-7507cab1a3d9/go.mod h1:Sz9qvvuW4giUi9w6DE2syPY4cYecoQ/mqQ6ybm2qQR0=
 github.com/vinijabes/gostreamer v0.1.6 h1:+MaBNHlEDFvzlLrIiZlZWEOZ5XNR5gHtg2JdwFjNjgI=
 github.com/vinijabes/gostreamer v0.1.6/go.mod h1:MAY+dEJuXm1US1WKVFWXIIxeyrQw2t2DLyjb1vnU4hs=
+github.com/vinijabes/gostreamer v0.1.7-0.20200927010745-ab232afcffc3 h1:erNqdBPSbvg5xljWvkrxyJaHJC1n54AGRiHznyGiewI=
+github.com/vinijabes/gostreamer v0.1.7-0.20200927010745-ab232afcffc3/go.mod h1:MAY+dEJuXm1US1WKVFWXIIxeyrQw2t2DLyjb1vnU4hs=
 golang.org/x/crypto v0.0.0-20190228161510-8dd112bcdc25/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
 golang.org/x/crypto v0.0.0-20200602180216-279210d13fed/go.mod h1:LzIPMQfyMNhhGPhUkYOs5KpL4U8rLKemX1yGLhDgUto=
